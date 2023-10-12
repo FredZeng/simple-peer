@@ -39,6 +39,10 @@ interface PeerOpts {
    * @default true
    */
   trickle?: boolean;
+  /**
+   * @default false
+   */
+  allowHalfTrickle?: boolean;
   wrtc?: any;
   objectMode?: boolean;
   /**
@@ -71,4 +75,32 @@ export default class Peer extends stream.Duplex {
   get connected(): boolean;
 
   address(): { port?: number; family?: string; address?: string };
+
+  /**
+   * {
+   *     renegotiate?: boolean;
+   *     transceiverRequest?: { kine: string, init?: RTCRtpTransceiverInit };
+   *     candidate?: RTCIceCandidate;
+   *     sdp?: string;
+   * }
+   */
+  signal(data: string): void;
+
+  send(chunk: ArrayBufferView|ArrayBuffer|Buffer|string|Blob): void;
+
+  addTransceiver(kind: string, init?: RTCRtpTransceiverInit): void;
+
+  addStream(stream: MediaStream): void;
+
+  addTrack(track: MediaStreamTrack, stream: MediaStream): void;
+
+  replaceTrack(oldTrack: MediaStreamTrack, newTrack: MediaStreamTrack, stream: MediaStream): void;
+
+  removeTrack(track: MediaStreamTrack, stream: MediaStream): void;
+
+  removeStream(stream: MediaStream): void;
+
+  negotiate(): void;
+
+  destroy(err?: Error): void;
 }
