@@ -137,9 +137,18 @@ class Peer extends stream.Duplex {
     // - onfingerprintfailure
     // - onnegotiationneeded
 
+    let channel
+
+    try {
+      channel = this._pc.createDataChannel(this.channelName, this.channelConfig)
+    } catch (err) {
+      this.destroy(errCode(err, 'ERR_CREATE_DATA_CHANNEL'))
+      return
+    }
+
     if (this.initiator || this.channelNegotiated) {
       this._setupData({
-        channel: this._pc.createDataChannel(this.channelName, this.channelConfig)
+        channel
       })
     } else {
       this._pc.ondatachannel = event => {
