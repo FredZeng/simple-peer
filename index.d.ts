@@ -102,5 +102,5 @@ export default class Peer extends stream.Duplex {
 
   negotiate(): void;
 
-  destroy(err?: Error): void;
+  destroy(err?: Error): this;
 }
