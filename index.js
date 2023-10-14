@@ -509,6 +509,9 @@ class Peer extends stream.Duplex {
     })
   }
 
+  /**
+   * @param {RTCDataChannelEvent} event
+   */
   _setupData (event) {
     if (!event.channel) {
       // In some situations `pc.createDataChannel()` returns `undefined` (in wrtc),

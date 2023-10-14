@@ -43,7 +43,11 @@ interface PeerOpts {
    * @default false
    */
   allowHalfTrickle?: boolean;
-  wrtc?: any;
+  wrtc?: {
+    RTCPeerConnection: RTCPeerConnection,
+    RTCSessionDescription: RTCSessionDescription,
+    RTCIceCandidate: RTCIceCandidate,
+  };
   objectMode?: boolean;
   /**
    * @default 5000
@@ -54,6 +58,10 @@ interface PeerOpts {
 export default class Peer extends stream.Duplex {
   static WEBRTC_SUPPORT: boolean;
   static config: RTCConfiguration;
+
+  /**
+   * @default {}
+   */
   static channelConfig: RTCDataChannelInit;
 
   public readonly _id: string;
@@ -65,6 +73,9 @@ export default class Peer extends stream.Duplex {
   private offerOptions: RTCOfferOptions;
   private answerOptions: RTCAnswerOptions;
   private sdpTransform: (sdp: string) => string;
+
+  public readonly destroyed: boolean;
+  public readonly destroying: boolean;
 
   private _pc: RTCPeerConnection;
 
